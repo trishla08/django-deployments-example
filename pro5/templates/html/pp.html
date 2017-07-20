@@ -1,0 +1,21 @@
+{% extends 'html/base.html' %}
+{% block body_block %}
+
+<div class="jumbotron">
+<h3>Username:</h3> {{ user.username }}
+<br><br>
+<h3>Email:</h3> {{ user.email }}
+<br><br>
+
+<h3>Social Handle:</h3> {{ user.portfolio_site }}
+<br><br>
+
+<h3>Description:</h3> {{ user.desc }}
+<br><br>
+
+<h3>Profile Picture:</h3> {{ user.profile_pic }}
+
+
+</div>
+
+{% endblock %}
