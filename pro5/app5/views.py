@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 # Create your views here.
 def index(request):
@@ -17,13 +17,20 @@ def user_logout(request):
 	logout(request)
 	return HttpResponseRedirect(reverse('index'))
 
-@login_required
 def profilepage(request, username):
 	#user = get_object_or_404(UserProfileInfo, user_username=username)
 	#user1 = user.UserProfileInfo
 
-	user = UserProfileInfo.objects.get(username=username)
-	return render(request, 'html/pp.html', {"user1": user1, "user":user,})
+	user = User.objects.get(username=username)
+	return render(request, 'html/pp.html', {"user":user,})
+
+def search(request):
+
+	if (request.method == 'POST'):
+		proname = request.POST.get('search')
+
+		return redirect('app5:profilepage',username=proname)
+
 
 def register(request):
 
@@ -41,8 +48,8 @@ def register(request):
 			profile = profile_form.save(commit=False)
 			profile.user = user
 
-			if 'profile_pic' in request.FILES:
-				profile.profile_pic = request.FILES['profile_pic']
+			if 'profilepic' in request.FILES:
+				profile.profilepic = request.FILES['profilepic']
 
 			profile.save()
 
@@ -80,5 +87,16 @@ def user_login(request):
 	else:
 		return render(request,'html/login.html', {})
 
+def user_status(request,username):
 
+#	return HttpResponse("wrong, idiot.")
+
+	if request.method == 'POST':
+		mystatus = request.POST.get('status')
+		user = User.objects.get(username=username)
+		profile = user.userprofileinfo
+		profile.status = mystatus
+		profile.save()
+		return redirect('app5:profilepage',username=username)
+	    
 		#trishla8 mypass8

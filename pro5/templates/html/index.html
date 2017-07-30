@@ -1,8 +1,35 @@
+
 {% extends 'html/base.html' %}
 {% block body_block %}
 
-<div class="jumbotron">
-This is the homepage.
+
+
+
+{% if user.is_authenticated %}
+<div class="container">
+<h3><center>Hi {{user.username}}!</center>
+<form method="POST" action="{% url 'app5:user_status' user.username %}">
+{% csrf_token %}
+<div class="form-group">
+      <label for="inputlg"></label>
+      <input class="form-control input-lg" id="inputlg" type="text" name='status' placeholder="How are you feeling?">
+    </div><center>
+    <input type="submit" name='submitbtn' value='Add Status'>
+    </center>
+</form>
+</h3>
 </div>
+{% else %}
+<center>
+
+<div class="container"><h3>You're not logged in, yet!</h3></div>
+<br><br><br></br><br>
+    <button type="button" class="btn btn-primary"><a href="{% url 'app5:register' %}">Register</a></button>
+    OR
+    <button type="button" class="btn btn-primary"><a href="{% url 'app5:user_login' %}">Login</a></button>
+
+<!-- starts carousel -->
+</center>
+{% endif %}
 
 {% endblock %}
